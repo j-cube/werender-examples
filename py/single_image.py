@@ -71,15 +71,16 @@ def main(session):
 
 
     # set material attributes
-    mat_ceramic.set_color(wr.Color(1.0, 1.0, 1.0))
+    mat_belt.set_color(wr.Color(0.55, 0.05, 0.05))
+
+    tex_maneki_col = scene.new_texture(wr.textures.File)
+    tex_maneki_col.set_texture_file(maneki_tex_col_asset)
+    mat_eyebulb.set_color(tex_maneki_col)
+
+    mat_ceramic.set_color(tex_maneki_col)
     mat_ceramic.set_roughness(0.1)
     mat_ceramic.set_specular_level(1.0)
 
-    mat_belt.set_color(wr.Color(0.55, 0.05, 0.05))
-
-    tex_eyebulb_col = scene.new_texture(wr.textures.File)
-    tex_eyebulb_col.set_texture_file(maneki_tex_col_asset)
-    mat_eyebulb.set_color(tex_eyebulb_col)
 
     mat_cornea.set_reflection_ior(2.0)
     mat_cornea.set_ior(2.0)
