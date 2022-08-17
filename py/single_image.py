@@ -25,6 +25,7 @@ def main(session):
     maneki_asset = session.upload(resolve_file('maneki.usd'), remote_folder)
     torii_asset = session.upload(resolve_file('torii.usd'), remote_folder)
     base_asset = session.upload(resolve_file('base.usd'), remote_folder)
+    grass_asset = session.upload(resolve_file('grass2.usd'), remote_folder)
     maneki_tex_col_asset = session.upload(resolve_file('manekiAR_BaseColor.png'), remote_folder)
     wood_tex_rou_asset = session.upload(resolve_file('wood_rough.tif'), remote_folder)
     copper_tile_tex_col_asset = session.upload(resolve_file('rooftiles_col.jpg'), remote_folder)
@@ -36,6 +37,7 @@ def main(session):
     maneki = scene.new_model(maneki_asset)
     torii = scene.new_model(torii_asset)
     base = scene.new_model(base_asset)
+    grass = scene.new_model(grass_asset)
 
     # create persp camera, create and apply transform, set attributes
     camera = scene.new_camera(wr.cameras.Persp)
@@ -65,6 +67,7 @@ def main(session):
     mat_copper_tile = scene.new_material(wr.materials.Generic)
     mat_granite = scene.new_material(wr.materials.Generic)
     mat_base = scene.new_material(wr.materials.Generic)
+    mat_grass = scene.new_material(wr.materials.Fiber)
 
 
     # set material attributes
@@ -122,6 +125,12 @@ def main(session):
     mat_base.set_color(wr.Color(0.5, 0.5, 0.5))
     mat_base.set_specular_level(2.0)
 
+    mat_grass.set_color(wr.Color(0.11, 0.207, 0.081))
+    mat_grass.set_consistency(0.5)
+    mat_grass.set_synthetic(0.5)
+    mat_grass.set_color_variation(0.2)
+
+
     # assign materials
     maneki.assign_material(mat_ceramic, '.*/body.*')
     maneki.assign_material(mat_gold, '.*/bell.*')
@@ -143,6 +152,8 @@ def main(session):
     torii.assign_material(mat_copper_tile, '.*/roof.*')
 
     base.assign_material(mat_base)
+
+    grass.assign_material(mat_grass)
 
     # choose the camera
     scene.set_active_camera(camera)
