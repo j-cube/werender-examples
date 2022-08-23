@@ -16,7 +16,7 @@ def resolve_file(filename):
 #
 def main(session):
     # log file
-    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'werender.log'))
+    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'maneki_and_torii.log'))
 
     # where to store assets in the cloud storage
     remote_folder = '/assets/examples'
@@ -162,15 +162,15 @@ def main(session):
     # create render settings
     settings = wr.RenderSettings()
     settings.set_resolution(720, 720)
-    settings.set_image_name('maneki_torii_single.jpg')
+    settings.set_image_name('maneki_and_torii.jpg')
     # specify where renders will be stored in the cloud storage
-    settings.set_remote_folder('/MyRenders/tests')
+    settings.set_remote_folder('/MyRenders/examples')
 
     # now we render!
     result = session.start_render_and_wait(settings, scene)
 
     # optionally download the image
-    result.download_image(tempfile.gettempdir(), 'maneki_torii_single.jpg')
+    result.download_image(tempfile.gettempdir(), 'maneki_and_torii.jpg')
 
 if __name__ == '__main__':
     session = wr.authenticate()

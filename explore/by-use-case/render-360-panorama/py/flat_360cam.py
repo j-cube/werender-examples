@@ -16,7 +16,7 @@ def resolve_file(filename):
 #
 def main(session):
     # log file
-    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'werender.log'))
+    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'flat_360cam.log'))
 
     # where to store assets in the cloud storage
     remote_folder = '/assets/examples'
@@ -113,12 +113,12 @@ def main(session):
     # create render settings
     settings = wr.RenderSettings()
     settings.set_resolution(960, 480)
-    settings.set_image_name('flat_vr360.png')
+    settings.set_image_name('flat_360cam.png')
     # specify where renders will be stored in the cloud storage
-    settings.set_remote_folder('/MyRenders/tests')
+    settings.set_remote_folder('/MyRenders/examples')
 
     result = session.start_render_and_wait(settings, scene)
-    result.download_image(tempfile.gettempdir(), 'flat_vr360.png')
+    result.download_image(tempfile.gettempdir(), 'flat_360cam.png')
 
 if __name__ == '__main__':
     session = wr.authenticate()

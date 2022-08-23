@@ -17,7 +17,7 @@ def resolve_file(filename):
 #
 def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
     # log file
-    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'werender.log'))
+    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'chair_variations.log'))
 
     # where to store assets in the cloud storage
     remote_folder = '/assets/examples'
@@ -121,7 +121,7 @@ def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
     settings.set_resolution(720, 720)
     settings.set_image_name(asset_name + '_' + cam_name + '_' + mat_name + '.jpg')
     # specify where renders will be stored in the cloud storage
-    settings.set_remote_folder('/MyRenders/tests')
+    settings.set_remote_folder('/MyRenders/examples')
 
     # render synchronously
     # result = session.start_render_and_wait(settings, scene)
