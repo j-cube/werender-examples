@@ -5,6 +5,7 @@ These scripts are used to generate the images or videos in the [explore section]
 
 Folder structure:
 
+```
 .
 ├── assets
 └── explore
@@ -18,7 +19,7 @@ Folder structure:
         ├── render-turntable
         ├── render-usdz-asset
         └── render-variations
-
+```
 
 
 ## Common instructions
