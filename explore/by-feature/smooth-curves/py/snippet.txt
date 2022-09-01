@@ -1,0 +1,14 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/smoothcurves/py/smoothcurves.py
+
+# upload assets
+curves_asset = session.upload(resolve_file('curves_pwuv.usd'), remote_folder)
+
+# create model
+curves = scene.new_model(curves_asset)
+
+# get all hierarchy via regex
+curves_all = curves.get_items('.*')
+
+# set it render as infinite smooth catmull-rom spline curves
+curves_all.set_curve_smooth(True)

@@ -1,0 +1,14 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/smoothmesh/py/smoothmesh.py
+
+# upload assets
+group_asset = session.upload(resolve_file('tetra_group.usd'), remote_folder)
+
+# create model
+group = scene.new_model(group_asset)
+
+# get the left tetrahedron from the model hierarchy via regex
+group_left_tetra = group.get_items('.*/tetra_l.*')
+
+# set it render as infinite smooth mesh (subdivision surface)
+group_left_tetra.set_mesh_smooth(True)

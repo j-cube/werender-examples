@@ -1,0 +1,19 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/displacement/py/displacement.py
+
+# upload asset
+tex_disp_asset = session.upload(resolve_file('rock_clifflayer_bumpdisp_rgb.tif'), remote_folder)
+
+# create a file texture and set some of its attributes
+tex_disp = scene.new_texture(wr.textures.File) # it is also possible to use a 2d or 3d texture e.g. Grid or Noise
+tex_disp.set_colorspace("linear") # displacement expects linear color space
+tex_disp.set_tonal_adjust(1) # optionally auto-adjust the value range in [0, 1]
+tex_disp.set_texture_file(tex_disp_asset)
+
+# create a material
+mat_green = scene.new_material(wr.materials.Generic)
+
+# pass the file texture as the height parameter to the material and set some of its attributes
+mat_green.set_height(tex_disp) # use tex_disp for displacing height
+mat_green.set_height_type(4) # displacement centered around a 0.5 value
+mat_green.set_height_amount(0.2) # these are world space units

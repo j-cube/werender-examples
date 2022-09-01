@@ -86,9 +86,9 @@ def main(session):
     mat_carbon.set_edge_color(wr.Color(1.0, 0.85, 0.796))
     mat_carbon.set_roughness(0.4)
 
-    mat_rubber.set_color(wr.Color(0.0, 0.0, 0.0))
-    mat_rubber.set_roughness(0.8)
-    mat_rubber.set_specular_level(1.25)
+    mat_rubber.set_color(wr.Color(0.01, 0.01, 0.01))
+    mat_rubber.set_roughness(0.7)
+    mat_rubber.set_specular_level(0.3)
 
     mat_silver.set_color(wr.Color(0.9, 0.9, 0.9))
     mat_silver.set_edge_color(wr.Color(1.0, 1.0, 1.0))

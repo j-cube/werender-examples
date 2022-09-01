@@ -1,0 +1,19 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/bump/py/bump.py
+
+# upload asset
+tex_bump_asset = session.upload(resolve_file('rock_clifflayer_bumpdisp_rgb.tif'), remote_folder)
+
+# create a file texture and set some of its attributes
+tex_bump = scene.new_texture(wr.textures.File) # it is also possible to use a 2d or 3d texture e.g. Grid or Noise
+tex_bump.set_colorspace("linear") # bump expects linear color space
+tex_bump.set_tonal_adjust(1) # optionally auto-adjust the value range in [0, 1]
+tex_bump.set_texture_file(tex_bump_asset)
+
+# create a material
+mat_green = scene.new_material(wr.materials.Generic)
+
+# pass the file texture as the height parameter to the material and set some of its attributes
+mat_green.set_height(bump_disp) # use tex_disp for displacing height
+mat_green.set_height_type(0) # bump
+mat_green.set_height_amount(0.1) # bump value, typically a small number in the 0, 1 range
