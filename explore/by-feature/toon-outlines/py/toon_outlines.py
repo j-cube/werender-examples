@@ -76,18 +76,18 @@ def main(session):
     #    `set_outlines_tinting_enabled` (default: true)
 
     # rely on default color regions, tint them with a color.
-    # specify outline color, which wil be tinted by the original color regions:
-    #  mat_toon_green.set_lit_color(wr.Color(0.66, 0.66, 0.66)) # default
-    #  mat_toon_green.set_dark_color(wr.Color(0.33, 0.33, 0.33)) # default
-    #  mat_toon_green.set_outlines_tinting_enabled(True) # default
+    # specify outline color, which wil be tinted by the original color regions
+    #  mat_toon_green.set_lit_color(wr.Color(0.66, 0.66, 0.66))     # default
+    #  mat_toon_green.set_dark_color(wr.Color(0.33, 0.33, 0.33))    # default
+    #  mat_toon_green.set_outlines_tinting_enabled(True)            # default
     mat_toon_green.set_tint(wr.Color(0.377, 0.8, 0.513))
     mat_toon_green.set_outlines_color(wr.Color(0.077, 0.5, 0.213))
 
-    # specify region's colors, don't tint them, rely on the default outline
-    # color, which will be tinted bt the region's colors:
-    #  mat_toon_pink.set_tint(wr.Color(1.0, 1.0, 1.0)) # default
-    #  mat_toon_pink.set_outlines_tinting_enabled(True) # default
-    #  mat_toon_pink.set_outlines_color(wr.Color(0.5, 0.5, 0.5)) # default
+    # specify region's colors, don't tint them.
+    # rely on the default outline color, which will be tinted by region colors
+    #  mat_toon_pink.set_tint(wr.Color(1.0, 1.0, 1.0))              # default
+    #  mat_toon_pink.set_outlines_tinting_enabled(True)             # default
+    #  mat_toon_pink.set_outlines_color(wr.Color(0.5, 0.5, 0.5))    # default
     mat_toon_pink.set_lit_color(wr.Color(0.8, 0.377, 0.661))
     mat_toon_pink.set_dark_color(wr.Color(0.5, 0.077, 0.361))
 
