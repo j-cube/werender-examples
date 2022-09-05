@@ -68,11 +68,28 @@ def main(session):
     mat_white.set_roughness(0.1)
     mat_white.set_specular_level(1.0)
 
+    # the toon effect is the sum of two "quantized" color regions and outlines:
+    #  - color regions default: `lit_color` (66% gray), `dark_color` (33% gray)
+    #  - outline color default: `outline_color` (50% gray)
+    #  - outline colors are by default tinted by the region's colors, but NOT by
+    #    the region's tint (this allows any color possibility):
+    #    `set_outlines_tinting_enabled` (default: true)
+
+    # rely on default color regions, tint them with a color.
+    # specify outline color, which wil be tinted by the original color regions:
+    #  mat_toon_green.set_lit_color(wr.Color(0.66, 0.66, 0.66)) # default
+    #  mat_toon_green.set_dark_color(wr.Color(0.33, 0.33, 0.33)) # default
+    #  mat_toon_green.set_outlines_tinting_enabled(True) # default
     mat_toon_green.set_tint(wr.Color(0.377, 0.8, 0.513))
     mat_toon_green.set_outlines_color(wr.Color(0.077, 0.5, 0.213))
 
-    mat_toon_pink.set_tint(wr.Color(0.8, 0.377, 0.661))
-    mat_toon_pink.set_outlines_color(wr.Color(0.5, 0.077, 0.361))
+    # specify region's colors, don't tint them, rely on the default outline
+    # color, which will be tinted bt the region's colors:
+    #  mat_toon_pink.set_tint(wr.Color(1.0, 1.0, 1.0)) # default
+    #  mat_toon_pink.set_outlines_tinting_enabled(True) # default
+    #  mat_toon_pink.set_outlines_color(wr.Color(0.5, 0.5, 0.5)) # default
+    mat_toon_pink.set_lit_color(wr.Color(0.8, 0.377, 0.661))
+    mat_toon_pink.set_dark_color(wr.Color(0.5, 0.077, 0.361))
 
     # assign materials
     group.assign_material(mat_toon_green, '.*/tetra_l.*')
