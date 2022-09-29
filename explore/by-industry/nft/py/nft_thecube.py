@@ -1,4 +1,4 @@
-# Copyright 2022 J-CUBE Inc. Yokohama, Japan. All Rights Reserved.
+# Copyright 2022 J Cube Inc. Yokohama, Japan. All Rights Reserved.
 #
 # https://werender.io/explore
 #   by industry: nft
