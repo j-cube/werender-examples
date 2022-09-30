@@ -75,26 +75,23 @@ def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
     mat_screws.set_edge_color(wr.Color(0.78, 0.78, 0.78))
     mat_screws.set_roughness(0.2)
 
-    mat_stoppers.set_color(wr.Color(0.2, 0.2, 0.2))
+    mat_stoppers.set_color(wr.Color(0.1, 0.1, 0.1))
     mat_stoppers.set_specular_level(1.0)
     mat_stoppers.set_roughness(0.623)
-
-    mat_backdrop.set_color(wr.Color(1.0, 1.0, 1.0))
-    mat_backdrop.set_specular_level(1.0)
-    mat_backdrop.set_roughness(0.2)
 
     # create seat texture and set its attributes
     seat_hgt_tex = scene.new_texture(wr.textures.Cellnoise)
     seat_hgt_tex.set_scale(1.0)
     seat_hgt_tex.set_noise_type(3)
     seat_hgt_tex.set_invert(1)
+    seat_hgt_tex.set_border_color(wr.Color(0.0, 0.0, 0.0))
 
     # create material for seat and set attributes: it uses the above texture
     mat_seat.set_color(mat_value)
     mat_seat.set_height(seat_hgt_tex)
-    mat_seat.set_height_amount(0.9)
+    mat_seat.set_height_amount(0.5)
     mat_seat.set_height_type(3)
-    mat_seat.set_roughness(0.247)
+    mat_seat.set_roughness(0.25)
 
     # create legs texture and its attributes
     wood_tex_col = scene.new_texture(wr.textures.File)
@@ -113,13 +110,17 @@ def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
     chair.assign_material(mat_screws, '.*/screws.*')
     chair.assign_material(mat_stoppers, '.*/stoppers.*')
     chair.assign_material(mat_frame, '.*/frame.*')
-    backdrop.assign_material(mat_backdrop)
 
+    mat_backdrop.set_color(wr.Color(1.0, 1.0, 1.0))
+    mat_backdrop.set_specular_level(1.0)
+    mat_backdrop.set_roughness(0.2)
+
+    backdrop.assign_material(mat_backdrop)
 
     # create render settings
     settings = wr.RenderSettings()
-    settings.set_resolution(720, 720)
-    settings.set_image_name(asset_name + '_' + cam_name + '_' + mat_name + '.jpg')
+    settings.set_resolution(1000, 1000)
+    settings.set_image_name(asset_name + '_' + cam_name + '_' + mat_name + '.png')
     # specify where renders will be stored in the cloud storage
     settings.set_remote_folder('/MyRenders/examples')
 
@@ -149,7 +150,7 @@ def wait_for_all_renders(session, requests, asset_name, cam_name, mat_name):
             print('render {} failed!'.format(i))
         else:
             status.get_result().download_image(tempfile.gettempdir(), asset_name
-                + '_' + cam_name + '_' + mat_name + '_' + '.jpg')
+                + '_' + cam_name + '_' + mat_name + '.png')
 
 
 def main(session):
@@ -161,8 +162,8 @@ def main(session):
     cam_dict = {
         "wide": wr.Transform(translate=(1560.608, 828.903, 2184.463),
             rotate=(-9.938, 35.800, 0.0)),
-        "near": wr.Transform(translate=(823.326, 59.707, 319.407),
-            rotate=(23.062, 67, 0.0))}
+        "near": wr.Transform(translate=(521.161, 292.448, 412.655),
+            rotate=(12.262, 47.0, 0.0))}
 
     # dictionary of camera transforms
     mat_dict = {
