@@ -135,8 +135,9 @@ def create_render(session,
     image_name = asset_name + '_' + cam_name + '_' + mat_name + '.png'
 
     settings = wr.RenderSettings()
-    settings.set_resolution(512, 512)
+    settings.set_resolution(1000, 1000)
     settings.set_image_name(image_name)
+
     # specify where renders will be stored in the cloud storage
     settings.set_remote_folder('/MyRenders/examples')
 
@@ -145,7 +146,7 @@ def create_render(session,
     return request
 
 
-def wait_for_all_renders(session, requests, request_cam_mats):
+def wait_for_all_renders(session, requests, request_features):
     # 1. Wait until all the renders have finished.
     statuses = [session.query_render(request) for request in requests]
     while not all([status.done for status in statuses]):
@@ -158,7 +159,7 @@ def wait_for_all_renders(session, requests, request_cam_mats):
         if status.failed:
             print('render {} failed!'.format(i))
         else:
-            (asset_name, cam_name, mat_name) = request_cam_mats[i]
+            (asset_name, cam_name, mat_name) = request_features[i]
             image_name = asset_name + '_' + cam_name + '_' + mat_name + '.png'
             status.get_result().download_image(tempfile.gettempdir(),
                                                image_name)
@@ -183,17 +184,17 @@ def main(session):
 
     # create render jobs with different assets and cameras
     requests = list()
-    request_cam_mats = list()
+    request_features = list()
     for asset in chair_assets:
         for (cam_name, cam_xform) in cam_dict.items():
             for (mat_name, mat_value) in mat_dict.items():
                 request = create_render(
                     session, asset, cam_name, cam_xform, mat_name, mat_value)
                 requests.append(request)
-                request_cam_mats.append((asset, cam_name, mat_name))
+                request_features.append((asset, cam_name, mat_name))
 
     # wait for all jobs
-    wait_for_all_renders(session, requests, request_cam_mats)
+    wait_for_all_renders(session, requests, request_features)
 
 
 if __name__ == '__main__':
