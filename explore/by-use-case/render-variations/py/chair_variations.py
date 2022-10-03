@@ -8,27 +8,41 @@ import time
 
 import werender as wr
 
-# a convenience function to find all assets via env var
+
 def resolve_file(filename):
+    '''
+    a convenience function to find all assets via env var
+    '''
     return os.path.join(
         os.environ.get('WERENDER_ASSETS_PATH', './'), filename)
 
 
-#
-def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
+def create_render(session,
+                  asset_name,
+                  cam_name,
+                  cam_xform,
+                  mat_name,
+                  mat_value):
+    '''
+    create render asynchronously
+    '''
     # log file
-    wr.set_log_file(os.path.join(tempfile.gettempdir(), 'chair_variations.log'))
+    wr.set_log_file(os.path.join(
+        tempfile.gettempdir(), 'chair_variations.log'))
 
     # where to store assets in the cloud storage
     remote_folder = '/assets/examples'
 
     # assets
-    chair_asset = session.upload(resolve_file(asset_name + '.usd'), remote_folder)
-    backdrop_asset = session.upload(resolve_file('backdrop_4.usd'), remote_folder)
+    chair_asset = session.upload(resolve_file(
+        asset_name + '.usd'), remote_folder)
+    backdrop_asset = session.upload(
+        resolve_file('backdrop_4.usd'), remote_folder)
     hdri_asset = session.upload(resolve_file('studio_03.exr'), remote_folder)
-    wood_tex_asset = session.upload(resolve_file('wood_col.jpg'), remote_folder)
+    wood_tex_asset = session.upload(
+        resolve_file('wood_col.jpg'), remote_folder)
 
-    # create scenes
+    # create scene
     scene = wr.Scene()
 
     # create models
@@ -118,25 +132,20 @@ def render(session, asset_name, cam_name, cam_xform, mat_name, mat_value):
     backdrop.assign_material(mat_backdrop)
 
     # create render settings
+    image_name = asset_name + '_' + cam_name + '_' + mat_name + '.png'
+
     settings = wr.RenderSettings()
-    settings.set_resolution(1000, 1000)
-    settings.set_image_name(asset_name + '_' + cam_name + '_' + mat_name + '.png')
+    settings.set_resolution(512, 512)
+    settings.set_image_name(image_name)
     # specify where renders will be stored in the cloud storage
     settings.set_remote_folder('/MyRenders/examples')
 
-    # render synchronously
-    # result = session.start_render_and_wait(settings, scene)
-    # download the image
-    # result.download_image(tempfile.gettempdir(), asset_name + '_' + cam_name +
-    #    '_' + mat_name + '_' + '.jpg')
-
     # render asynchronously
-    requests = []
-    requests.append(session.start_render(settings, scene))
-    wait_for_all_renders(session, requests, asset_name, cam_name, mat_name)
+    request = session.start_render(settings, scene)
+    return request
 
 
-def wait_for_all_renders(session, requests, asset_name, cam_name, mat_name):
+def wait_for_all_renders(session, requests, request_cam_mats):
     # 1. Wait until all the renders have finished.
     statuses = [session.query_render(request) for request in requests]
     while not all([status.done for status in statuses]):
@@ -149,8 +158,10 @@ def wait_for_all_renders(session, requests, asset_name, cam_name, mat_name):
         if status.failed:
             print('render {} failed!'.format(i))
         else:
-            status.get_result().download_image(tempfile.gettempdir(), asset_name
-                + '_' + cam_name + '_' + mat_name + '.png')
+            (asset_name, cam_name, mat_name) = request_cam_mats[i]
+            image_name = asset_name + '_' + cam_name + '_' + mat_name + '.png'
+            status.get_result().download_image(tempfile.gettempdir(),
+                                               image_name)
 
 
 def main(session):
@@ -161,24 +172,30 @@ def main(session):
     # dictionary of camera transforms
     cam_dict = {
         "wide": wr.Transform(translate=(1560.608, 828.903, 2184.463),
-            rotate=(-9.938, 35.800, 0.0)),
+                             rotate=(-9.938, 35.800, 0.0)),
         "near": wr.Transform(translate=(521.161, 292.448, 412.655),
-            rotate=(12.262, 47.0, 0.0))}
+                             rotate=(12.262, 47.0, 0.0))}
 
     # dictionary of camera transforms
     mat_dict = {
         "yellow": wr.Color(0.710, 0.607, 0.0),
         "green": wr.Color(0.0, 0.710, 0.607)}
 
+    # create render jobs with different assets and cameras
+    requests = list()
+    request_cam_mats = list()
     for asset in chair_assets:
         for (cam_name, cam_xform) in cam_dict.items():
             for (mat_name, mat_value) in mat_dict.items():
-                    render(session, asset, cam_name, cam_xform, mat_name,
-                        mat_value)
+                request = create_render(
+                    session, asset, cam_name, cam_xform, mat_name, mat_value)
+                requests.append(request)
+                request_cam_mats.append((asset, cam_name, mat_name))
+
+    # wait for all jobs
+    wait_for_all_renders(session, requests, request_cam_mats)
 
 
 if __name__ == '__main__':
     session = wr.authenticate()
     main(session)
-
-
