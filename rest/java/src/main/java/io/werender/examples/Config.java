@@ -25,19 +25,23 @@ public class Config {
     private String privateKey;
 
     public static Config create() {
-	/* Create instance. */
+	// Create instance.
 	Config config = new Config();
 
-	/* Get home folder and configuration folder. */
+	// Get configuration folder where contains werender.config file.
 	String homeDirPath = SystemUtils.getUserHome().getAbsolutePath();
 	String configDirPath = new String(homeDirPath);
-	if (SystemUtils.IS_OS_MAC_OSX) {
+	if (SystemUtils.IS_OS_LINUX) {
+	    configDirPath += "/.config/werender";
+	} else if (SystemUtils.IS_OS_MAC_OSX) {
 	    configDirPath += "/Library/Application Support/werender";
+	} else if (SystemUtils.IS_OS_WINDOWS) {
+	    configDirPath += "/werender";
 	} else {
 	    log.fatal(String.format("Unsupported platform"));
 	}
 
-	/* Read werender.config file. */
+	// Read werender.config file.
 	try {
 	    String serverAddress = Config.DEFAULT_SERVER_ADDRESS;
 
@@ -64,7 +68,7 @@ public class Config {
 	    e.printStackTrace();
 	}
 
-	/* Read werender.key file. */
+	// Read werender.key file.
 	try {
 	    String keyFilePath = configDirPath + "/werender.key";
 	    String key = Files.readString(Paths.get(keyFilePath));
@@ -75,7 +79,7 @@ public class Config {
 	    e.printStackTrace();
 	}
 
-	/* Return instance. */
+	// Return instance.
 	return config;
     }
 
