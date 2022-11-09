@@ -98,7 +98,9 @@ def create_render(session,
     seat_hgt_tex.set_scale(1.0)
     seat_hgt_tex.set_noise_type(3)
     seat_hgt_tex.set_invert(1)
+    # since we invert we should set it to black to obtain white
     seat_hgt_tex.set_border_color(wr.Color(0.0, 0.0, 0.0))
+    #seat_hgt_tex.set_background_color(wr.Color(0.0, 0.0, 0.0)) # to be added
 
     # create material for seat and set attributes: it uses the above texture
     mat_seat.set_color(mat_value)

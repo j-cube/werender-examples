@@ -1,0 +1,25 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/smoothmesh/py/smoothmesh.py
+
+# Copyright 2022 J-CUBE Inc. Yokohama, Japan. All Rights Reserved.
+#
+# https://werender.io/explore
+#   by feature: HDRI Image Based Lighting
+
+
+# upload hdri image asset
+hdri_asset = session.upload(resolve_file('snow.exr'), remote_folder)
+
+# create texture to use for physical sky
+tex_hdri = scene.new_texture(wr.textures.File)
+tex_hdri.set_texture_file(hdri_asset)
+
+# create hdri env light and its attributes
+env_hdri_light = scene.new_light(wr.lights.Envhdri)
+env_hdri_light.set_hdri_image(tex_hdri)
+env_hdri_light.set_intensity(1.0)
+env_hdri_light.set_visible_to_camera(1)
+
+# rotate the environemnt if needed
+env_hdri_light_xform = wr.Transform(rotate=(0.0, 90.0, 0.0))
+env_hdri_light.set_xform(env_hdri_light_xform)

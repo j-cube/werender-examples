@@ -1,0 +1,18 @@
+# this is a code snippet from the following complete example:
+#   https://github.com/j-cube/werender-examples/blob/release/explore/by-feature/subsurface/py/subsurface.py
+
+
+# create a material with subsurface scattering, type: `Generic` or `Skin`
+mat_sss = scene.new_material(wr.materials.Generic)
+
+# set relevant subsurface material attributes
+mat_sss.set_color(wr.Color(0.3, 0.8, 0.5)) # subsurface will use it for color
+mat_sss.set_subsurface(1.0) # the amount of subsurface, from 0 to 1
+mat_sss.set_subsurface_scale(10.0) # subsurface depends on object scale (cm)
+
+# assign the material to your model or model item
+model1.assign_material(mat_sss)
+model2.assign_material(mat_sss, '.*/model_item_name.*')
+
+# NOTE: subsurface involves a volumetric diffusion simulation and therefore
+#       requires models to be closed (air/water-tight).
